@@ -202,10 +202,10 @@ Smart-Student-Result-Management-System/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/Smart-Student-Result-Management-System.git
+git clone https://github.com/kosaladathapththu/Smart-Student-Result-Management-System-using-Binary-Search-Tree-BST.git
 
 # Navigate to project directory
-cd Smart-Student-Result-Management-System
+cd Smart-Student-Result-Management-System-using-Binary-Search-Tree-BST
 
 # Compile the project
 javac src/*.java
@@ -359,8 +359,8 @@ We extend our sincere gratitude to:
 
 **Made with ❤️ and ☕ by PDSA Students**
 
-[![GitHub followers](https://img.shields.io/github/followers/yourusername?style=social)](https://github.com/yourusername)
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/Smart-Student-Result-Management-System?style=social)](https://github.com/yourusername/Smart-Student-Result-Management-System)
+[![GitHub followers](https://img.shields.io/github/followers/kosaladathapththu?style=social)](https://github.com/kosaladathapththu)
+[![GitHub stars](https://img.shields.io/github/stars/kosaladathapththu/Smart-Student-Result-Management-System-using-Binary-Search-Tree-BST?style=social)](https://github.com/kosaladathapththu/Smart-Student-Result-Management-System-using-Binary-Search-Tree-BST)
 
 ---
 
