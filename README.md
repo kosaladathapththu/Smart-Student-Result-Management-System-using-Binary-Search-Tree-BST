@@ -279,9 +279,9 @@ List<Student> topPerformers = bst.getRankList(10); // Top 10 students
 ---
 
 **Course:** Principles of Data Structures and Algorithms (PDSA)  
-**Institution:** [Your Institute Name]  
+**Institution:** [NIBM]  
 **Academic Year:** 2025/2026  
-**Supervisor:** [Lecturer Name]
+**Supervisor:** [Dr.Thisara Weerasignhe]
 
 </div>
 
