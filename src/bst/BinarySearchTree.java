@@ -70,6 +70,14 @@ private Node deleteRec(Node current, String indexNo) {
     return current;
 }
 
+public boolean update(Student updated) {
+    Node node = searchRec(root, updated.getIndexNo());
+    if (node == null) return false;
+    node.data = updated; // replace student object (BST key unchanged)
+    return true;
+}
+
+
 private Node findMin(Node node) {
     while (node.left != null) {
         node = node.left;
@@ -79,6 +87,10 @@ private Node findMin(Node node) {
 
 public void displayInOrder() {
     inorderRec(root);
+}
+
+public void clear() {
+    root = null;
 }
 
 private void inorderRec(Node current) {
