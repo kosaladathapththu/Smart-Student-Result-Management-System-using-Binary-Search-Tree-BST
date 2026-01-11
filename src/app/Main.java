@@ -1,16 +1,23 @@
-public static void main(String[] args) {
-    BinarySearchTree bst = new BinarySearchTree();
+package app;
 
-    bst.insert(new Student("2025A002", "Saman", 65, 60, 72));
-    bst.insert(new Student("2025A001", "Kamal", 80, 70, 60));
-    bst.insert(new Student("2025A003", "Nimal", 30, 40, 35));
+import bst.BinarySearchTree;
+import model.Student;
 
-    System.out.println("=== Sorted Students ===");
-    bst.displayInOrder();
+public class Main {
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
 
-    System.out.println("\nDeleting 2025A002...\n");
-    bst.delete("2025A002");
+        bst.insert(new Student("2025A002", "Saman", 65, 60, 72));
+        bst.insert(new Student("2025A001", "Kamal", 80, 70, 60));
+        bst.insert(new Student("2025A003", "Nimal", 30, 40, 35));
 
-    System.out.println("=== After Delete ===");
-    bst.displayInOrder();
+        System.out.println("=== Sorted Students ===");
+        bst.displayInOrder();
+
+        System.out.println("\nDeleting 2025A002...\n");
+        bst.delete("2025A002");
+
+        System.out.println("=== After Delete ===");
+        bst.displayInOrder();
+    }
 }
