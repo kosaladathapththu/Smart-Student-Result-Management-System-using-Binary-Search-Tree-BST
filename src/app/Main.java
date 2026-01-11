@@ -5,6 +5,8 @@ import model.Student;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.io.*;
+import java.util.List;
 
 
 import java.util.Scanner;
@@ -25,8 +27,13 @@ public class Main {
             System.out.println("5. Show At-Risk Students");
             System.out.println("6. Show Scholarship Eligible Students");
             System.out.println("7. Show Top N Students (Ranking)");
+            System.out.println("8. Update Student Marks");
+            System.out.println("9. Save to CSV");
+            System.out.println("10. Load from CSV");
+
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
+            
 
 
             String choice = sc.nextLine().trim();
@@ -53,6 +60,15 @@ public class Main {
                     break;
                 case "7":
                     showTopN();
+                    break;
+                    case "8":
+                    updateStudent();
+                    break;
+                case "9":
+                    saveToCsv();
+                    break;
+                case "10":
+                    loadFromCsv();
                     break;
                 case "0":
                     System.out.println("Program terminated.");
@@ -94,6 +110,31 @@ public class Main {
             System.out.println(student);
         }
     }
+private static void updateStudent() {
+    System.out.print("Enter Index Number to update: ");
+    String index = sc.nextLine().trim();
+
+    Student existing = bst.search(index);
+    if (existing == null) {
+        System.out.println("Student not found.");
+        return;
+    }
+
+    System.out.println("Current Record: " + existing);
+
+    System.out.print("New Name (press Enter to keep same): ");
+    String name = sc.nextLine().trim();
+    if (name.isEmpty()) name = existing.getName();
+
+    double pdsa = readDouble("New PDSA Marks: ");
+    double se = readDouble("New SE Marks: ");
+    double dm2 = readDouble("New DM2 Marks: ");
+
+    Student updated = new Student(index, name, pdsa, se, dm2);
+    bst.update(updated);
+
+    System.out.println("Student record updated successfully.");
+}
 
     private static void deleteStudent() {
         System.out.print("Enter Index Number to delete: ");
@@ -131,6 +172,59 @@ public class Main {
     }
     if (!found) System.out.println("No at-risk students found.");
 }
+
+private static void saveToCsv() {
+    String fileName = "students.csv";
+    List<Student> list = bst.inorderList();
+
+    try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
+        pw.println("indexNo,name,pdsa,se,dm2");
+        for (Student s : list) {
+            pw.printf("%s,%s,%.1f,%.1f,%.1f%n",
+                    s.getIndexNo(),
+                    s.getName().replace(",", " "),
+                    s.getPdsa(),
+                    s.getSe(),
+                    s.getDm2()
+            );
+        }
+        System.out.println("Saved successfully to " + fileName);
+    } catch (IOException e) {
+        System.out.println("Error saving file: " + e.getMessage());
+    }
+}
+
+private static void loadFromCsv() {
+    String fileName = "students.csv";
+
+    File f = new File(fileName);
+    if (!f.exists()) {
+        System.out.println("No CSV found. Please save first (students.csv).");
+        return;
+    }
+
+    bst.clear();
+
+    try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        String line = br.readLine(); // header
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length < 5) continue;
+
+            String indexNo = parts[0].trim();
+            String name = parts[1].trim();
+            double pdsa = Double.parseDouble(parts[2].trim());
+            double se = Double.parseDouble(parts[3].trim());
+            double dm2 = Double.parseDouble(parts[4].trim());
+
+            bst.insert(new Student(indexNo, name, pdsa, se, dm2));
+        }
+        System.out.println("Loaded successfully from " + fileName);
+    } catch (Exception e) {
+        System.out.println("Error loading file: " + e.getMessage());
+    }
+}
+
 
 private static void showScholarshipEligible() {
     List<Student> list = bst.inorderList();
