@@ -1,6 +1,9 @@
 package bst;
 
 import model.Student;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BinarySearchTree {
     private Node root;
@@ -86,6 +89,18 @@ private void inorderRec(Node current) {
     inorderRec(current.right);
 }
 
+public List<Student> inorderList() {
+    List<Student> list = new ArrayList<>();
+    inorderToList(root, list);
+    return list;
+}
+
+private void inorderToList(Node current, List<Student> list) {
+    if (current == null) return;
+    inorderToList(current.left, list);
+    list.add(current.data);
+    inorderToList(current.right, list);
+}
 
 
 }
