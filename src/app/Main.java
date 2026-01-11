@@ -82,21 +82,21 @@ public class Main {
     // ---------------- MENU FUNCTIONS ----------------
 
     private static void addStudent() {
-        System.out.print("Student Index Number: ");
-        String index = sc.nextLine().trim();
+    System.out.print("Student Index Number: ");
+    String index = sc.nextLine().trim();
 
-        System.out.print("Student Name: ");
-        String name = sc.nextLine().trim();
-
-        double pdsa = readDouble("PDSA Marks: ");
-        double se = readDouble("SE Marks: ");
-        double dm2 = readDouble("DM2 Marks: ");
-
-        Student student = new Student(index, name, pdsa, se, dm2);
-        bst.insert(student);
-
-        System.out.println("Student record added successfully.");
+    if (index.isEmpty()) {
+        System.out.println("Index number cannot be empty.");
+        return;
     }
+
+    if (bst.search(index) != null) {
+        System.out.println("A student with this index already exists.");
+        return;
+    }
+
+
+    
 
     private static void searchStudent() {
         System.out.print("Enter Index Number to search: ");
@@ -150,15 +150,23 @@ private static void updateStudent() {
     }
 
     private static double readDouble(String prompt) {
-        while (true) {
-            try {
-                System.out.print(prompt);
-                return Double.parseDouble(sc.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
+    while (true) {
+        try {
+            System.out.print(prompt);
+            double value = Double.parseDouble(sc.nextLine().trim());
+
+            if (value < 0 || value > 100) {
+                System.out.println("Marks must be between 0 and 100.");
+                continue;
             }
+            return value;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
         }
     }
+}
+
     private static void showAtRisk() {
     List<Student> list = bst.inorderList();
     boolean found = false;
@@ -258,4 +266,3 @@ private static void showTopN() {
     }
 }
 
-}
