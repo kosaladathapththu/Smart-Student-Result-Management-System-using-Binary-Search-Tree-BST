@@ -12,7 +12,7 @@ public class BinarySearchTree {
         root = insertRec(root, student);
     }
 
-    private Node insertRec(Node current, Student student) {
+    public Node insertRec(Node current, Student student) {
         if (current == null) return new Node(student);
 
         int cmp = student.getIndexNo().compareTo(current.data.getIndexNo());
