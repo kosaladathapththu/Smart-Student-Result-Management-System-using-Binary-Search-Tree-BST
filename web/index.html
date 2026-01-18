@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Student Result System (BST)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Student Result Management System</h1>
+
+  <div class="card">
+    <input id="indexNo" placeholder="Index No" />
+    <input id="name" placeholder="Name" />
+    <input id="pdsa" placeholder="PDSA" />
+    <input id="se" placeholder="SE" />
+    <input id="dm2" placeholder="DM2" />
+
+    <div class="btns">
+      <button onclick="addStudent()">Add</button>
+      <button onclick="searchStudent()">Search</button>
+      <button onclick="updateStudent()">Update</button>
+      <button onclick="deleteStudent()">Delete</button>
+      <button onclick="loadAll()">Show All</button>
+    </div>
+  </div>
+
+  <pre id="out" class="out"></pre>
+
+  <script src="app.js"></script>
+</body>
+</html>
