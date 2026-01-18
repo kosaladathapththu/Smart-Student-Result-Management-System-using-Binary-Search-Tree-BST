@@ -1,0 +1,79 @@
+How to know this is really a BST
+A Binary Search Tree (BST) is identified by this rule:
+
+For every node:
+
+Left subtree has keys smaller than the node’s key
+
+Right subtree has keys greater than the node’s key
+(Your key is indexNo.)
+
+In your code, the BST “proof” is here (inside insertRec and searchRec):
+
+Insert compares keys and goes left or right:
+
+int cmp = student.getIndexNo().compareTo(current.data.getIndexNo());
+if (cmp < 0) current.left = insertRec(current.left, student);
+else if (cmp > 0) current.right = insertRec(current.right, student);
+Search does the same comparison to walk left/right:
+
+int cmp = indexNo.compareTo(current.data.getIndexNo());
+if (cmp < 0) return searchRec(current.left, indexNo);
+else return searchRec(current.right, indexNo);
+Easy way to “detect BST” when running
+If you call Show All, your backend uses:
+
+bst.inorderList() → (in-order traversal)
+
+In-order traversal of a BST always produces sorted order by the key.
+
+So if your “Show All” list is sorted by indexNo automatically (even if you added students in random order), that is a strong runtime proof it’s a BST.
+
+How your project works (full flow)
+Your project is basically 3 layers:
+
+1) Frontend (HTML/CSS/JS)
+Runs in browser at: http://127.0.0.1:5501/index.html
+
+Buttons call JS functions (addStudent(), loadAll(), saveCsv(), etc.)
+
+JS uses fetch() to call backend API.
+
+2) Backend API (Java ApiServer)
+Runs at: http://localhost:8080
+
+It receives requests like:
+
+Add → POST /students
+
+Show All → GET /students
+
+Search → GET /student?id=...
+
+Update → PUT /student?id=...
+
+Delete → DELETE /student?id=...
+
+Save CSV → POST /save
+
+Load CSV → POST /load
+
+3) Data Structure (BST in memory)
+Inside ApiServer, you have:
+
+private static final BinarySearchTree bst = new BinarySearchTree();
+So while the Java server is running:
+
+Every Add/Search/Update/Delete is done on BST
+
+That’s why it works without a database (BST is the in-memory “storage”)
+
+Persistence (keeping data after restart)
+When you click Save CSV: BST → students.csv
+
+When you click Load CSV: students.csv → BST rebuilt
+
+If you want, I can give you a short “viva explanation” paragraph (2–3 lines) you can say to your lecturer to prove it’s BST + how the system works.
+
+=================================================================================================================================================================
+
