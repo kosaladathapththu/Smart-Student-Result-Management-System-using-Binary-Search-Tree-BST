@@ -43,6 +43,17 @@ async function deleteStudent() {
   out(await res.json());
 }
 
+async function saveCsv() {
+  const res = await fetch(`${API}/save`, { method: "POST" });
+  out(await res.json());
+}
+
+async function loadCsv() {
+  const res = await fetch(`${API}/load`, { method: "POST" });
+  out(await res.json());
+}
+
+
 async function updateStudent() {
   const id = val("indexNo");
   const p = payload();

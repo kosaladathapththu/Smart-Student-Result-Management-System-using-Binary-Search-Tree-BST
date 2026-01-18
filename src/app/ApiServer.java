@@ -17,13 +17,13 @@ public class ApiServer {
 
     public static void main(String[] args) throws Exception {
         int port = 8080;
-
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+
+        // -------------------- CRUD --------------------
 
         // List all OR Add new
         server.createContext("/students", ex -> {
             addCors(ex);
-
             if ("OPTIONS".equalsIgnoreCase(ex.getRequestMethod())) { ok(ex, ""); return; }
 
             if ("GET".equalsIgnoreCase(ex.getRequestMethod())) {
@@ -53,7 +53,6 @@ public class ApiServer {
         // Search / Update / Delete by id
         server.createContext("/student", ex -> {
             addCors(ex);
-
             if ("OPTIONS".equalsIgnoreCase(ex.getRequestMethod())) { ok(ex, ""); return; }
 
             // /student?id=2025A001
@@ -94,9 +93,70 @@ public class ApiServer {
             methodNotAllowed(ex);
         });
 
+        // -------------------- CSV PERSISTENCE --------------------
+
+        // SAVE: POST http://localhost:8080/save  -> creates students.csv
+        server.createContext("/save", ex -> {
+            addCors(ex);
+            if ("OPTIONS".equalsIgnoreCase(ex.getRequestMethod())) { ok(ex, ""); return; }
+            if (!"POST".equalsIgnoreCase(ex.getRequestMethod())) { methodNotAllowed(ex); return; }
+
+            try (PrintWriter pw = new PrintWriter(new FileWriter("students.csv"))) {
+                pw.println("indexNo,name,pdsa,se,dm2");
+                for (Student s : bst.inorderList()) {
+                    pw.printf("%s,%s,%.1f,%.1f,%.1f%n",
+                            s.getIndexNo(),
+                            s.getName().replace(",", " "),
+                            s.getPdsa(),
+                            s.getSe(),
+                            s.getDm2()
+                    );
+                }
+                ok(ex, "{\"message\":\"saved to students.csv\"}");
+            } catch (Exception e) {
+                bad(ex, "Save failed: " + e.getMessage());
+            }
+        });
+
+        // LOAD: POST http://localhost:8080/load  -> reads students.csv and rebuilds BST
+        server.createContext("/load", ex -> {
+            addCors(ex);
+            if ("OPTIONS".equalsIgnoreCase(ex.getRequestMethod())) { ok(ex, ""); return; }
+            if (!"POST".equalsIgnoreCase(ex.getRequestMethod())) { methodNotAllowed(ex); return; }
+
+            File f = new File("students.csv");
+            if (!f.exists()) { bad(ex, "students.csv not found. Save first."); return; }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+                bst.clear();      // empty current BST
+                br.readLine();    // header line
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length < 5) continue;
+
+                    String indexNo = parts[0].trim();
+                    String name    = parts[1].trim();
+                    double pdsa    = Double.parseDouble(parts[2].trim());
+                    double se      = Double.parseDouble(parts[3].trim());
+                    double dm2     = Double.parseDouble(parts[4].trim());
+
+                    bst.insert(new Student(indexNo, name, pdsa, se, dm2));
+                }
+
+                ok(ex, "{\"message\":\"loaded from students.csv\"}");
+            } catch (Exception e) {
+                bad(ex, "Load failed: " + e.getMessage());
+            }
+        });
+
+        // -------------------- START SERVER --------------------
         server.start();
         System.out.println("API running at http://localhost:" + port);
         System.out.println("Frontend should call: http://localhost:" + port + "/students");
+        System.out.println("Save CSV: POST http://localhost:" + port + "/save");
+        System.out.println("Load CSV: POST http://localhost:" + port + "/load");
     }
 
     // ----------------- Helpers -----------------
@@ -115,21 +175,10 @@ public class ApiServer {
         }
     }
 
-    private static void ok(HttpExchange ex, String body) throws IOException {
-        write(ex, 200, body);
-    }
-
-    private static void bad(HttpExchange ex, String msg) throws IOException {
-        write(ex, 400, "{\"error\":\"" + escape(msg) + "\"}");
-    }
-
-    private static void notFound(HttpExchange ex, String msg) throws IOException {
-        write(ex, 404, "{\"error\":\"" + escape(msg) + "\"}");
-    }
-
-    private static void methodNotAllowed(HttpExchange ex) throws IOException {
-        write(ex, 405, "{\"error\":\"Method not allowed\"}");
-    }
+    private static void ok(HttpExchange ex, String body) throws IOException { write(ex, 200, body); }
+    private static void bad(HttpExchange ex, String msg) throws IOException { write(ex, 400, "{\"error\":\"" + escape(msg) + "\"}"); }
+    private static void notFound(HttpExchange ex, String msg) throws IOException { write(ex, 404, "{\"error\":\"" + escape(msg) + "\"}"); }
+    private static void methodNotAllowed(HttpExchange ex) throws IOException { write(ex, 405, "{\"error\":\"Method not allowed\"}"); }
 
     private static void write(HttpExchange ex, int code, String body) throws IOException {
         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
