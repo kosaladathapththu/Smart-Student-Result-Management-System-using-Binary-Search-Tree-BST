@@ -1,32 +1,58 @@
-open terminal
+🔹 Step 1: Start Java Backend Server
 
+📌 Open Terminal / Command Prompt
 
-look it was,
 cd "D:\Local Repository\Smart-Student-Result-Management-System-using-Binary-Search-Tree-BST"
 
 
-then type,
- java --add-modules jdk.httpserver -cp out app.ApiServer
+📌 Run the backend API server:
+
+java --add-modules jdk.httpserver -cp out app.ApiServer
 
 
- now load,
- http://localhost:8080/students
+📌 Open this URL in your browser 🌐:
 
-1.png
-
-
-============================================================================================================================================
+http://localhost:8080/students
 
 
- ****another terminal,***
- type,
- cd "D:\Local Repository\Smart-Student-Result-Management-System-using-Binary-Search-Tree-BST"
+✅ If backend works correctly, student data will appear
+📷 Refer screenshot: 1.png
 
- now,
- python -m http.server 5501 or python -m http.server 5501
+🔹 Step 2: Start Frontend (HTML UI)
 
- then load,
- http://127.0.0.1:5501/index.html
+📌 Open ANOTHER terminal window (do NOT close backend terminal) 🪟
+
+cd "D:\Local Repository\Smart-Student-Result-Management-System-using-Binary-Search-Tree-BST"
 
 
-2.png
+📌 Start Python HTTP Server:
+
+python -m http.server 5501
+
+
+(or)
+
+python3 -m http.server 5501
+
+
+📌 Open this URL in your browser 🌐:
+
+http://127.0.0.1:5501/index.html
+
+
+✅ Frontend UI will load successfully
+📷 Refer screenshot: 2.png
+
+⚠️ Important Notes (Read Carefully)
+
+⚠️ Java backend MUST be running first
+⚠️ Do NOT close the backend terminal
+⚠️ Python 3 and Java JDK must be installed
+⚠️ Ports 8080 and 5501 must be free
+
+🧪 If Something Does Not Work
+
+🔹 Check Java version
+🔹 Check Python installation
+🔹 Make sure correct folder path is used
+🔹 Restart terminals and try again 🔁🙂
